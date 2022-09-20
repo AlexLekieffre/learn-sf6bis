@@ -24,7 +24,7 @@ class BlogController extends AbstractController
     
 
     
-    #[Route('/index', name: 'homepage')]
+    #[Route('/', name: 'homepage')]
     public function index(): Response
     {
         return $this->render('blog/index.html.twig', [
