@@ -3,24 +3,17 @@
 namespace App\Controller;
 
 use PhpParser\Node\Name;
+use App\Service\Proverbe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+
 class BlogController extends AbstractController
 {
-    public function menu()
-    {
-        $listMenu = array(
-            array('title'=>'Mon Blog','texte'=>'Accueil','url'=>$this->generateUrl('homepage',[],UrlGeneratorInterface::ABSOLUTE_URL)),
-            array('title'=>'Login','texte'=>'connexion','url'=>"/login")
-        );
-        
-        return $this->render("parts/menu.html.twig",array(
-            'listmenu'=>$listMenu
-        ));
-    }
+    
+
     
 
     
@@ -62,6 +55,22 @@ class BlogController extends AbstractController
     {
         return $this->render('blog/lecture.html.twig', [
             'url' => $url,'id'=>$id ]);
+    }
+
+    public function menu()
+    {
+        $listMenu = array(
+            array('title'=>'Mon Blog','texte'=>'Accueil','url'=>$this->generateUrl('homepage',[],UrlGeneratorInterface::ABSOLUTE_URL)),
+            array('title'=>'Login','texte'=>'connexion','url'=>"/login")
+        );
+        
+        return $this->render("parts/menu.html.twig",array(
+            'listmenu'=>$listMenu
+        ));
+    }
+
+    public function proverbe(Proverbe $proverbe) {
+        return $this->render("parts/proverbe.html.twig", ['proverbe'=> $proverbe->getProverbe()]);
     }
    
    

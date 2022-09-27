@@ -2,6 +2,8 @@
 <html>
 <head>
     <title> {% block title %}Symfony Blog{% endblock %} </title>
+    <link
+        rel="icon" href='{{asset("build/images/template/favicon.ico")}}'>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     {% block stylesheets %}
@@ -23,6 +25,9 @@
 {{encore_entry_script_tags("app")}}
     {% endblock %}
 </body>
+{% block footer %}
+    {{ render(controller('App\\Controller\\BlogController::proverbe'))}}
+{% endblock %}
 
 
 
