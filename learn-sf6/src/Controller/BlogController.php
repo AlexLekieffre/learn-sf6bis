@@ -2,8 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
+use App\Entity\Category;
+use App\Entity\Image;
+use App\Form\ArticleType;
 use PhpParser\Node\Name;
 use App\Service\Proverbe;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,8 +19,34 @@ class BlogController extends AbstractController
 {
     
 
-    
+    #[Route('/fixadd', name : 'fixadd')]
+    public function fixadd(ManagerRegistry $doctrine )
+    {
+        $manager= $doctrine->getManager();
 
+        $imgRP = $manager->getRepository(Image::class);
+        $catRP = $manager->getRepository(Category::class);
+        $img = $imgRP->findById(1);
+        $category = $catRP->findAll();
+        dump($category,$img);
+
+        $article = new Article();
+        $article->setTitle("first article")
+            ->setImage($img[0])
+            ->addCategory($category[0])
+            ->addCategory($category[1])
+            ->setContent("voila mon first test")
+            ->setLastUpdateDate(new \DateTime())
+            ->setIsPublished(false);
+            
+        $manager->persist($article);
+        $manager->flush();
+        dump($article);
+
+        return new Response('<body>YA bon</body>');
+        
+        
+    }
     
     #[Route('/', name: 'homepage')]
     public function index(): Response
@@ -35,7 +66,8 @@ class BlogController extends AbstractController
     #[Route('/add', name: 'app_add')]
     public function add()
         {
-            return $this->render("blog/ajout.html.twig");
+            $form = $this->createForm(ArticleType::class);
+            return $this->render("blog/ajout.html.twig",["form"=>$form->createView()]);
         }
         
     #[Route('/show', name: 'app_show')]
