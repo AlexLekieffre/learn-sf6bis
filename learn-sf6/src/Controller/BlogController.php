@@ -43,7 +43,7 @@ class BlogController extends AbstractController
         $manager->flush();
         dump($article);
 
-        return new Response('<body>YA bon</body>');
+        return new Response('<body>c\'est bon</body>');
         
         
     }
